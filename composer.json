@@ -1,0 +1,57 @@
+{
+    "name": "luizalabs-opensource-php/composer-git-hooks",
+    "description": "Easily manage git hooks in your composer config fork BrainMaestro",
+    "type": "library",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "keywords": [
+        "git",
+        "hook",
+        "composer"
+    ],
+    "require": {
+        "php": "^8",
+        "symfony/console": "^6.0"
+    },
+    "require-dev": {
+        "ext-json": "*",
+        "phpunit/phpunit": "^9.5",
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "luizalabs-opensource-php\\GitHooks\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "luizalabs-opensource-php\\GitHooks\\Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "cghooks"
+    ],
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "post-install-cmd": "./cghooks add --ignore-lock",
+        "post-update-cmd": "./cghooks update",
+        "check-style": "php-cs-fixer fix --using-cache=no --diff --dry-run .",
+        "fix-style": "php-cs-fixer fix --using-cache=no ."
+    },
+    "scripts-descriptions": {
+        "test": "Run all tests.",
+        "check-style": "Run style checks (only dry run - no fixing!).",
+        "fix-style": "Run style checks and fix violations."
+    },
+    "extra": {
+        "hooks": {
+            "pre-commit": "composer check-style",
+            "pre-push": [
+                "composer test"
+            ]
+        }
+    }
+}
